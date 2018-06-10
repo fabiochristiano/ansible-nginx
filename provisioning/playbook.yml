@@ -2,3 +2,11 @@
 - hosts: nginx
   roles:
     - nginx
+
+- hosts: webserver1
+  roles:
+    - webserver1
+
+- hosts: webserver2
+  roles:
+    - webserver2   

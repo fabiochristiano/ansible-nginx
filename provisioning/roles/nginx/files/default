@@ -1,3 +1,11 @@
+upstream webserver {
+    #round-robin — requests to the application servers are distributed in a round-robin fashion,
+    #least-connected — next request is assigned to the server with the least number of active connections,
+    #ip-hash — a hash-function is used to determine what server should be selected for the next request (based on the client’s IP address).
+    server 172.17.177.101;
+    server 172.17.177.102;
+}
+
 server {
 
   error_log /var/log/nginx/error.log debug;
@@ -18,7 +26,12 @@ server {
     rewrite ^/pudim/(.*)$ http://www.pudim.com.br permanent;
   }
 
-
+  location /webserver/ {
+  ##proxy_set_header Host $host;
+  ##proxy_set_header X-Real-IP $remote_addr;
+  ##proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_pass http://webserver/;
+  }
 
   error_page 404 /404.html;
   location = /404.html {
