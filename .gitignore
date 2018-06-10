@@ -2,7 +2,7 @@
 .vagrant/
 
 #Ansible
-hosts
+provisioning/inventory
 *.retry
 
 # Byte-compiled / optimized / DLL files
