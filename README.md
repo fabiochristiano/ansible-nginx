@@ -9,8 +9,11 @@ Redirect:
 http://nginx.fac.com.br/pudim
 
 Load Balance:
+
 On Vagrantfile has more 2 webservers for Nginx use loadbalance.
+
 http://nginx.fac.com.br/webserver
+
 while true; do curl http://nginx.fac.com.br/webserver/; sleep 1; done
 
 Root dir was changed from usr/share/nginx/html/ to /var/www/html/ and /var/www/error/ 
