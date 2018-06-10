@@ -8,8 +8,43 @@
 
 - name: 'Nginx install'
   apt:
-    name: "{{ item }}"
+    name: "nginx"
     state: latest
   become: yes
+
+- name: 'Configura sites-available default'
+  copy:
+    src: 'files/default'
+    dest: '/etc/nginx/sites-available/default'
+  become: yes
+  notify:
+    - restart nginx
+
+- name: 'Create html folders'
+  file: #https://docs.ansible.com/ansible/2.4/file_module.html
+    path: '{{ item }}'
+    state: directory
+    mode: 0755
+  become: yes
   with_items:
-    - nginx
+    - html
+    - error
+
+- name: 'Configura html files'
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  become: yes
+  with_items:
+    - { src: 'files/index.html', dest: "/var/www/html" }
+    - { src: 'files/404.html', dest: "/var/www/error" }
+  notify:
+    - restart nginx
+
+- name: Remove nginx defualt root folder
+  file:
+    state: absent
+    path: "/usr/share/nginx/"
+  become: yes
+  notify:
+    - restart nginx
